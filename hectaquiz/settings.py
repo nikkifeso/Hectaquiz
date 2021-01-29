@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8u+2#9j3cxi5!^b)cmkqwmt!j5jd3=2nkt@nvcgg^w-@sa@k5$'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
@@ -31,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +46,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -51,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'hectaquiz.urls'
 
@@ -79,11 +85,11 @@ WSGI_APPLICATION = 'hectaquiz.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hectaquiz',
-        'USER': 'postgres',
-        'PASSWORD':'123456',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD':config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
 
@@ -105,6 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 AUTH_USER_MODEL = 'quiz.User'
 
@@ -128,14 +135,44 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.AllowAny'
-    # ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
+   'EXCEPTION_HANDLER': 'quiz.core.exceptions.core_exception_handler',
+   'NON_FIELD_ERRORS_KEY': 'error',
+   'DEFAULT_PERMISSION_CLASSES': [
+         'rest_framework.permissions.IsAuthenticated',
+         'rest_framework.permissions.IsAdminUser',
+         ],
+   'DEFAULT_AUTHENTICATION_CLASSES': (
+     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+     )
+}
+
+JWT_AUTH = {
+  'JWT_ENCODE_HANDLER':
+  'rest_framework_jwt.utils.jwt_encode_handler',
+  'JWT_DECODE_HANDLER':
+  'rest_framework_jwt.utils.jwt_decode_handler',
+  'JWT_PAYLOAD_HANDLER':
+  'rest_framework_jwt.utils.jwt_payload_handler',
+  'JWT_PAYLOAD_GET_USER_ID_HANDLER':
+  'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+  'JWT_RESPONSE_PAYLOAD_HANDLER':
+  'rest_framework_jwt.utils.jwt_response_payload_handler',
+ 
+  'JWT_SECRET_KEY': 'SECRET_KEY',
+  'JWT_GET_USER_SECRET_KEY': None,
+  'JWT_PUBLIC_KEY': None,
+  'JWT_PRIVATE_KEY': None,
+  'JWT_ALGORITHM': 'HS256',
+  'JWT_VERIFY': True,
+  'JWT_VERIFY_EXPIRATION': True,
+  'JWT_LEEWAY': 0,
+  'JWT_EXPIRATION_DELTA': timedelta(days=30),
+  'JWT_AUDIENCE': None,
+  'JWT_ISSUER': None,
+  'JWT_ALLOW_REFRESH': False,
+  'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=30),
+  'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+  'JWT_AUTH_COOKIE': None,
 }
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240

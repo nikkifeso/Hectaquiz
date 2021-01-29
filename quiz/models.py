@@ -1,7 +1,5 @@
-from datetime import datetime, timedelta
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.conf import settings
-# from django.utils.translation import gettext_lazy as _
 from django.db import models
 from .manager import UserManager
 from autoslug import AutoSlugField
@@ -20,24 +18,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at      = models.DateTimeField(auto_now=True)
     objects         = UserManager()
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.email
-
-    @property
-    def token(self):
-        return self._generate_jwt_token()
-
-    def _generate_jwt_token(self):
-        dt = datetime.now() + timedelta(days=60)
-        token = jwt.encode({
-            'id': self.pk,
-            'exp': int(dt.strftime('%s'))
-        }, settings.SECRET_KEY, algorithm='HS256')
-
-        return token.decode('utf-8')
 
 
 class Quiz(models.Model):
@@ -80,7 +65,7 @@ class QuizTaker(models.Model):
     score = models.IntegerField(default=0)
     completed = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
-    date_completed = models.DateTimeField(default=None)
+    date_completed = models.DateTimeField(default=None, null=True)
 
     def __str__(self):
         return self.user.email
@@ -89,7 +74,7 @@ class QuizTaker(models.Model):
 class UsersAnswer(models.Model):
     quiz_taker = models.ForeignKey(QuizTaker, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.question.label
