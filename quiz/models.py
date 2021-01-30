@@ -2,7 +2,6 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.conf import settings
 from django.db import models
 from .manager import UserManager
-import jwt
 
 
 class User(AbstractBaseUser, PermissionsMixin):
