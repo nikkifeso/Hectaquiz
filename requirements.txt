@@ -16,6 +16,7 @@ config==0.5.0.post0
 distlib==0.3.1
 dj-database-url==0.5.0
 Django==3.1.2
+django-autoslug-field==0.2.3
 django-cors-headers==3.7.0
 django-heroku==0.3.1
 django-nested-admin==3.3.3
