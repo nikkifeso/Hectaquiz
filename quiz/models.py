@@ -2,7 +2,6 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.conf import settings
 from django.db import models
 from .manager import UserManager
-from autoslug import AutoSlugField
 import jwt
 
 
