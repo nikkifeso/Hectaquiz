@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -176,3 +177,6 @@ JWT_AUTH = {
 }
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
