@@ -14,7 +14,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # is_superadmin   = models.BooleanField(default=False)
     is_active       = models.BooleanField(default=True)
     created_at      = models.DateTimeField(auto_now_add=True, default=timezone.now)
-    updated_at      = models.DateTimeField(auto_now=True, default=timezone.now)
+    updated_at      = models.DateTimeField(auto_now=True)
     objects         = UserManager()
 
     USERNAME_FIELD = 'email'
