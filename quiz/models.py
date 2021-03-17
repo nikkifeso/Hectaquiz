@@ -13,7 +13,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff        = models.BooleanField(default=False)
     # is_superadmin   = models.BooleanField(default=False)
     is_active       = models.BooleanField(default=True)
-    created_at      = models.DateTimeField(auto_now_add=True, default=timezone.now)
+    created_at      = models.DateTimeField(default=timezone.now)
     updated_at      = models.DateTimeField(auto_now=True)
     objects         = UserManager()
 
