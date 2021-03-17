@@ -149,7 +149,7 @@ REST_FRAMEWORK = {
 
 JWT_AUTH = {
   'JWT_ENCODE_HANDLER':
-  'rest_framework_jwt.utils.jwt_encode_handler',
+  'rest_framework_jwt.utils.jwt_encode_payload',
   'JWT_DECODE_HANDLER':
   'rest_framework_jwt.utils.jwt_decode_token',
   'JWT_PAYLOAD_HANDLER':
