@@ -4,4 +4,6 @@ django_nested_admin==3.3.3
 djangorestframework_simplejwt==4.7.1
 django_heroku==0.3.1
 djangorestframework==3.12.4
+gunicorn==20.1.0
+Pillow==8.2.0
 python-decouple==3.4

@@ -162,8 +162,10 @@ class UserRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     
 
     def get(self,request):
+        serializer_class = UserSerializer
         try:
             user = request.user
+            serializer = self.serializer_class(data=user)
             status_code = status.HTTP_200_OK
             response = {
                 'success': 'true',
