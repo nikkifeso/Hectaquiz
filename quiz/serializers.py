@@ -4,10 +4,6 @@ from .models import Quiz, Question, Answer, QuizTaker, UsersAnswer, User
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import update_last_login
-from rest_framework_jwt.settings import api_settings
-
-JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
-JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
 
 
 class QuizSerializer(serializers.ModelSerializer):
@@ -109,8 +105,7 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("User is inactive")
 
         try:
-            payload = JWT_PAYLOAD_HANDLER(user)
-            jwt_token = JWT_ENCODE_HANDLER(payload)
+            
             update_last_login(None, user)
         except User.DoesNotExist:
             raise serializers.ValidationError(
@@ -119,7 +114,6 @@ class LoginSerializer(serializers.Serializer):
 
         return {
             'email':user.email,
-            'token': jwt_token
         }
 
 

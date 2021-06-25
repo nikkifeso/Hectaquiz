@@ -3,14 +3,13 @@ from django.contrib.auth import get_user_model
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .models import Quiz, QuizTaker, Question, UsersAnswer, User, Answer
 from .serializers import (
     QuizSerializer, QuizDetailsSerializer, RegistrationSerializer,
     LoginSerializer, UserSerializer, UsersAnswerSerializer,
     ResultsSerializer, UserQuizSerializer, ResultsSerializer
 )
-from .renderers import UserJSONRenderer
+
 import datetime
 
 
@@ -115,7 +114,7 @@ class SubmitQuiz(generics.GenericAPIView):
 
 class RegistrationView(generics.GenericAPIView):
     permission_classes = [AllowAny]
-    renderer_classes = (UserJSONRenderer,)
+
     serializer_class = RegistrationSerializer
 
     def post(self,request):
@@ -142,7 +141,7 @@ class RegistrationView(generics.GenericAPIView):
 
 class LoginView(generics.GenericAPIView):
     permission_classes = [AllowAny]
-    renderer_classes = (UserJSONRenderer,)
+
     serializer_class = LoginSerializer
 
     def post(self, request):
@@ -152,7 +151,7 @@ class LoginView(generics.GenericAPIView):
         response = {
             'success' : 'True',
             'message': 'User logged in  successfully',
-            'token' : serializer.data['token'],
+          
             }
         status_code = status.HTTP_200_OK
         return Response(response, status=status_code)
@@ -160,8 +159,7 @@ class LoginView(generics.GenericAPIView):
 
 class UserRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_class = JSONWebTokenAuthentication
-    renderer_classes = (UserJSONRenderer,)
+    
 
     def get(self,request):
         try:
