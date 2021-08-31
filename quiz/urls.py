@@ -2,7 +2,7 @@ from django.urls import path, re_path
 from .views import(
      QuizDetails, QuizList, RegistrationView, LoginView, 
      UserRetrieveUpdateView, UserQuizList, SaveUserAnswers,
-     SubmitQuiz
+     SubmitQuiz, FacebookLogin, GoogleLogin
 )
 
 urlpatterns = [
@@ -14,4 +14,6 @@ urlpatterns = [
     path('users/register/', RegistrationView.as_view(), name='register'),
     path('users/login/', LoginView.as_view(), name='login'),
     path('user/', UserRetrieveUpdateView.as_view(), name='user'),
+    path('rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
+    path('rest-auth/google/', GoogleLogin.as_view(), name='google_login'),
 ]

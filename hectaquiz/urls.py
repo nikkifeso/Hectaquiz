@@ -7,6 +7,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 
+
 schema_view = get_schema_view(
     openapi.Info(
         title="Hectaquiz App",
@@ -32,4 +33,6 @@ urlpatterns = [
     path('api/', include('quiz.urls')),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/rest-auth/', include('rest_auth.urls')),
+    path('api/rest-auth/registration/', include('rest_auth.registration.urls'))
 ]

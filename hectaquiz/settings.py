@@ -43,6 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
     'drf_yasg',
     'nested_admin',
     'quiz',
@@ -149,6 +158,7 @@ REST_FRAMEWORK = {
      )
 }
 
+SITE_ID = 1
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
