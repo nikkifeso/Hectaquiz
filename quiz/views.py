@@ -163,13 +163,15 @@ class LoginView(generics.GenericAPIView):
 
 class UserRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
     
 
     def get(self,request):
-        serializer_class = UserSerializer
+        
         try:
             user = request.user
             serializer = self.serializer_class(data=user)
+            serializer.is_valid(raise_exception=True)
             status_code = status.HTTP_200_OK
             response = {
                 'success': 'true',
